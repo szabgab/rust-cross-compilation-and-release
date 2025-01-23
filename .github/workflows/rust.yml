@@ -27,7 +27,7 @@ jobs:
     - name: Run tests
       run: cargo test --verbose
 
-    - name: Build
+    - name: Build for Linux
       run: cargo build --release --verbose
     - name: list
       run: ls -l target/release
@@ -38,7 +38,21 @@ jobs:
         name: rust-demo-linux-release
         path: target/release/rust-demo
 
-        #x86_64-pc-windows-gnu
+
+
+    - name: Install Windows target
+      run: rustup target add x86_64-pc-windows-gnu
+
+    - name: Build for Windows 64 bit
+      run: cargo build --release --verbose --target=x86_64-pc-windows-gnu
+
+    - name: Windows 64 bit binary
+      uses: actions/upload-artifact@v3
+      with:
+        name: rust-demo-win64-release
+        path: target/x86_64-pc-windows-gnu/release/rust-demo.exe
+
+
 
         #  release:
         #    needs: [build-windows]

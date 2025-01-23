@@ -38,6 +38,8 @@ jobs:
         path: target/release/rust-demo
 
   build-windows:
+    runs-on: ubuntu-latest
+
     steps:
     - name: Update rust version
       run: |
@@ -61,19 +63,19 @@ jobs:
         name: rust-demo-win64-release
         path: target/x86_64-pc-windows-gnu/release/rust-demo.exe
 
-        #  release:
+  release:
         #     needs:
         #       - build-linux
         #       - build-windows
-        #     runs-on: ubuntu-latest
-        #
-        #     steps:
-        #      - name: Linux binary
-        #        uses: actions/download-artifact@v4
-        #        with:
-        #          name: rust-demo-linux-release
-        #          path: release/rust-demo-linux
-        #
+     runs-on: ubuntu-latest
+
+     steps:
+      - name: Linux binary
+        uses: actions/download-artifact@v4
+        with:
+          name: rust-demo-linux-release
+          path: release/rust-demo-linux
+
         #     - name: MS Windows binary
         #       uses: actions/download-artifact@v4
         #       with:

@@ -1,0 +1,85 @@
+name: Rust
+
+on:
+  push:
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Report rust version
+      run: |
+        rustc -vV
+        rustup update
+        rustc -vV
+
+    - uses: actions/checkout@v4
+
+    - name: Check format
+      run: cargo fmt --check
+    - name: Check clippy
+      run: cargo clippy -- --deny warnings
+    - name: Run tests
+      run: cargo test --verbose
+
+    - name: Build
+      run: cargo build --release --verbose
+    - name: list
+      run: ls -l target/release
+
+    - name: Linux binary
+      uses: actions/upload-artifact@v3
+      with:
+        name: rustatic-linux-release
+        path: target/release/rustatic
+
+        #x86_64-pc-windows-gnu
+
+        #  release:
+        #    needs: [build-windows]
+        #    runs-on: ubuntu-latest
+        #
+        #    steps:
+        #    - name: MS Windows binary
+        #      uses: actions/download-artifact@v3
+        #      with:
+        #        name: rustatic-windows-release
+        #        path: release/rustatic.exe
+        #
+        #    - name: Linux binary
+        #      uses: actions/download-artifact@v3
+        #      with:
+        #        name: rustatic-linux-release
+        #        path: release/rustatic-linux
+        #
+        #    - name: macOS binary
+        #      uses: actions/download-artifact@v3
+        #      with:
+        #        name: rustatic-macos-release
+        #        path: release/rustatic-macos
+        #
+        #    - name: Release
+        #      uses: fnkr/github-action-ghr@v1
+        #      if: startsWith(github.ref, 'refs/tags/')
+        #      env:
+        #        GHR_COMPRESS: zip
+        #        GHR_PATH: release
+        #        GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+
+
+        #  build-macos:
+        #    runs-on: macos-latest
+        #
+        #    steps:
+        #
+        #  build-windows:
+        #    runs-on: windows-latest
+        #
+        #    steps:
+
+

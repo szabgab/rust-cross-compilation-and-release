@@ -35,8 +35,8 @@ jobs:
     - name: Linux binary
       uses: actions/upload-artifact@v3
       with:
-        name: rustatic-linux-release
-        path: target/release/rustatic
+        name: rust-demo-linux-release
+        path: target/release/rust-demo
 
         #x86_64-pc-windows-gnu
 

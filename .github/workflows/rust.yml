@@ -12,9 +12,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Report rust version
+    - name: Update rust version
       run: |
-        rustc -vV
         rustup update
         rustc -vV
 
@@ -38,7 +37,14 @@ jobs:
         name: rust-demo-linux-release
         path: target/release/rust-demo
 
+  build-windows:
+    steps:
+    - name: Update rust version
+      run: |
+        rustup update
+        rustc -vV
 
+    - uses: actions/checkout@v4
 
     - name: Install mingw compiler needed for cross compilation to windows
       run: sudo apt install mingw-w64
@@ -55,37 +61,38 @@ jobs:
         name: rust-demo-win64-release
         path: target/x86_64-pc-windows-gnu/release/rust-demo.exe
 
+release:
+   needs:
+     - build-linux
+     - build-windows
+   runs-on: ubuntu-latest
 
-        #  release:
-        #    needs: [build-windows]
-        #    runs-on: ubuntu-latest
-        #
-        #    steps:
-        #    - name: MS Windows binary
-        #      uses: actions/download-artifact@v3
-        #      with:
-        #        name: rustatic-windows-release
-        #        path: release/rustatic.exe
-        #
-        #    - name: Linux binary
-        #      uses: actions/download-artifact@v3
-        #      with:
-        #        name: rustatic-linux-release
-        #        path: release/rustatic-linux
-        #
+   steps:
+    - name: Linux binary
+      uses: actions/download-artifact@v4
+      with:
+        name: rust-demo-linux-release
+        path: release/rust-demo-linux
+
+   - name: MS Windows binary
+     uses: actions/download-artifact@v4
+     with:
+       name: rustatic-windows-release
+       path: release/rust-demo.exe
+
         #    - name: macOS binary
         #      uses: actions/download-artifact@v3
         #      with:
         #        name: rustatic-macos-release
         #        path: release/rustatic-macos
         #
-        #    - name: Release
-        #      uses: fnkr/github-action-ghr@v1
-        #      if: startsWith(github.ref, 'refs/tags/')
-        #      env:
-        #        GHR_COMPRESS: zip
-        #        GHR_PATH: release
-        #        GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+    - name: Release
+      uses: fnkr/github-action-ghr@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      env:
+        GHR_COMPRESS: zip
+        GHR_PATH: release
+        GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
 
 
         #  build-macos:

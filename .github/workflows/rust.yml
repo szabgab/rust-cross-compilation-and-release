@@ -61,48 +61,48 @@ jobs:
         name: rust-demo-win64-release
         path: target/x86_64-pc-windows-gnu/release/rust-demo.exe
 
-  release:
-     needs:
-       - build-linux
-       - build-windows
-     runs-on: ubuntu-latest
-
-     steps:
-      - name: Linux binary
-        uses: actions/download-artifact@v4
-        with:
-          name: rust-demo-linux-release
-          path: release/rust-demo-linux
-
-     - name: MS Windows binary
-       uses: actions/download-artifact@v4
-       with:
-         name: rustatic-windows-release
-         path: release/rust-demo.exe
-
-          #    - name: macOS binary
-          #      uses: actions/download-artifact@v3
-          #      with:
-          #        name: rustatic-macos-release
-          #        path: release/rustatic-macos
-          #
-      - name: Release
-        uses: fnkr/github-action-ghr@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        env:
-          GHR_COMPRESS: zip
-          GHR_PATH: release
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
-
-
-          #  build-macos:
-          #    runs-on: macos-latest
-          #
-          #    steps:
-          #
-          #  build-windows:
-          #    runs-on: windows-latest
-          #
-          #    steps:
-
+        #  release:
+        #     needs:
+        #       - build-linux
+        #       - build-windows
+        #     runs-on: ubuntu-latest
+        #
+        #     steps:
+        #      - name: Linux binary
+        #        uses: actions/download-artifact@v4
+        #        with:
+        #          name: rust-demo-linux-release
+        #          path: release/rust-demo-linux
+        #
+        #     - name: MS Windows binary
+        #       uses: actions/download-artifact@v4
+        #       with:
+        #         name: rustatic-windows-release
+        #         path: release/rust-demo.exe
+        #
+        #          #    - name: macOS binary
+        #          #      uses: actions/download-artifact@v3
+        #          #      with:
+        #          #        name: rustatic-macos-release
+        #          #        path: release/rustatic-macos
+        #          #
+        #      - name: Release
+        #        uses: fnkr/github-action-ghr@v1
+        #        if: startsWith(github.ref, 'refs/tags/')
+        #        env:
+        #          GHR_COMPRESS: zip
+        #          GHR_PATH: release
+        #          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+        #
+        #
+        #          #  build-macos:
+        #          #    runs-on: macos-latest
+        #          #
+        #          #    steps:
+        #          #
+        #          #  build-windows:
+        #          #    runs-on: windows-latest
+        #          #
+        #          #    steps:
+        #
 
